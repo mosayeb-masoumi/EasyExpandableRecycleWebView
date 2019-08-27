@@ -6,10 +6,14 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.WebResourceError;
+import android.webkit.WebResourceRequest;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
+import android.webkit.WebViewClient;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +31,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     @NonNull
     @Override
     public Adapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int i) {
-        View view= LayoutInflater.from(parent.getContext()).inflate(R.layout.row,parent,false);
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.row, parent, false);
         return new ViewHolder(view);
     }
 
@@ -58,6 +62,15 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
 
                 holder.webview.loadUrl("https://www.shahrekhabar.com");
 
+                holder.webview.setWebViewClient(new WebViewClient() {
+                    public void onPageFinished(WebView view, String url) {
+                        // do your stuff here
+                        Toast.makeText(context, "loading finished", Toast.LENGTH_SHORT).show();
+                        // hide loading...
+                    }
+                });
+
+
                 notifyItemChanged(position);
             }
         });
@@ -70,7 +83,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView item_title,sub_item_genre,sub_item_year;
+        TextView item_title, sub_item_genre, sub_item_year;
         LinearLayout sub_item;
         WebView webview;
 
